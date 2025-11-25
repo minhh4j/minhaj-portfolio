@@ -58,20 +58,20 @@ export const Navbar: React.FC = () => {
     }
   };
   return <motion.nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 dark:bg-secondary/90 backdrop-blur-sm py-3 shadow-md' : 'bg-transparent py-5'}`} initial="hidden" animate="visible" variants={navbarVariants}>
-      <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
+      <div className="container flex items-center justify-between px-4 mx-auto md:px-6">
         <motion.a href="#home" className="text-2xl font-bold text-secondary dark:text-primary" whileHover={{
         scale: 1.05
       }} whileTap={{
         scale: 0.95
       }}>
-          Portfolio
+         MINHAJ 
         </motion.a>
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map(link => <motion.a key={link.name} href={link.href} className="text-secondary dark:text-white hover:text-primary dark:hover:text-primary transition-colors" variants={linkVariants} whileHover="hover">
+        <div className="items-center hidden space-x-8 md:flex">
+          {navLinks.map(link => <motion.a key={link.name} href={link.href} className="transition-colors text-secondary dark:text-white hover:text-primary dark:hover:text-primary" variants={linkVariants} whileHover="hover">
               {link.name}
             </motion.a>)}
-          <motion.button onClick={toggleTheme} className="p-2 rounded-full bg-gray-100 dark:bg-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" whileHover={{
+          <motion.button onClick={toggleTheme} className="p-2 transition-colors bg-gray-100 rounded-full dark:bg-dark hover:bg-gray-200 dark:hover:bg-gray-800" whileHover={{
           scale: 1.1
         }} whileTap={{
           scale: 0.9
@@ -80,8 +80,8 @@ export const Navbar: React.FC = () => {
           </motion.button>
         </div>
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <motion.button onClick={toggleTheme} className="p-2 mr-4 rounded-full bg-gray-100 dark:bg-dark hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" whileHover={{
+        <div className="flex items-center md:hidden">
+          <motion.button onClick={toggleTheme} className="p-2 mr-4 transition-colors bg-gray-100 rounded-full dark:bg-dark hover:bg-gray-200 dark:hover:bg-gray-800" whileHover={{
           scale: 1.1
         }} whileTap={{
           scale: 0.9
@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
       {/* Mobile Menu */}
-      {isMobileMenuOpen && <motion.div className="md:hidden bg-white dark:bg-secondary shadow-lg" initial={{
+      {isMobileMenuOpen && <motion.div className="bg-white shadow-lg md:hidden dark:bg-secondary" initial={{
       opacity: 0,
       height: 0
     }} animate={{
@@ -110,8 +110,8 @@ export const Navbar: React.FC = () => {
     }} transition={{
       duration: 0.3
     }}>
-          <div className="flex flex-col py-4 px-6 space-y-4">
-            {navLinks.map(link => <motion.a key={link.name} href={link.href} className="text-secondary dark:text-white hover:text-primary dark:hover:text-primary py-2 transition-colors" whileHover={{
+          <div className="flex flex-col px-6 py-4 space-y-4">
+            {navLinks.map(link => <motion.a key={link.name} href={link.href} className="py-2 transition-colors text-secondary dark:text-white hover:text-primary dark:hover:text-primary" whileHover={{
           x: 5
         }} onClick={() => setIsMobileMenuOpen(false)}>
                 {link.name}

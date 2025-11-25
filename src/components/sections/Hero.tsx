@@ -145,7 +145,7 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.3 }}>
                 
                 <img
-                  src="src/public/img3.jpg"
+                  src="public/img3.jpg"
                   alt="Minhaj - MERN Stack Developer Portrait"
                   className="object-cover w-full h-full" />
                 

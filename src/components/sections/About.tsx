@@ -102,7 +102,7 @@ export const About: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <img
-                  src="src/public/img2.jpg"
+                  src="/img2.jpg"
                   alt="Profile"
                   className="object-cover w-full h-full"
                 />

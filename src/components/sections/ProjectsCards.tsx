@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform, useScroll } from "framer-motion";
+import { useRef } from "react";
 import { ExternalLink, Github } from "lucide-react";
 
 type ProjectCardProps = {
@@ -17,147 +17,219 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     offset: ["start end", "end start"],
   });
 
-  // Parallax
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, -80]);
-  const cardScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1, 0.92]);
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.15, 0.5, 0.85, 1],
-    [0, 1, 1, 1, 0]
-  );
 
-  // Image zoom
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-
-  // Text slight parallax
-  const textY = useTransform(scrollYProgress, [0, 0.5, 1], [-35, 0, 35]);
+  const isReversed = index % 2 === 1;
 
   return (
     <div
       ref={ref}
-      className="sticky top-0 flex items-center justify-center h-screen"
+      className="sticky top-0 h-screen flex items-center justify-center"
       style={{
-        paddingTop: `${index * 26}px`, // stack gap
+        background: "linear-gradient(160deg, #0a0800 0%, #100c00 40%, #0d0900 70%, #080600 100%)",
       }}
     >
+      {/* Gold grain texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "128px",
+        }}
+      />
+
       <motion.article
-        style={{ y, scale: cardScale, opacity }}
-        className="relative w-full max-w-7xl overflow-hidden rounded-[2rem]
-                   border border-yellow-400/30 bg-gradient-to-br from-gray-950 via-black to-gray-950
-                   px-6 py-6 sm:px-10 sm:py-10
-                   shadow-[0_20px_80px_rgba(0,0,0,0.65)]
-                   backdrop-blur will-change-transform"
+        style={{ y }}
+        className="relative w-full h-screen flex items-center justify-center overflow-hidden"
       >
-        {/* Glow */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,200,50,0.18),transparent_60%)]" />
-        <div className="pointer-events-none absolute right-[-120px] top-[-120px] h-[280px] w-[280px] rounded-full bg-yellow-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute left-[-140px] bottom-[-140px] h-[320px] w-[320px] rounded-full bg-amber-500/10 blur-3xl" />
+        {/* Glow Background — gold tones */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <div
+            className="absolute top-[-100px] left-[-80px] w-[400px] h-[400px] rounded-full blur-[120px]"
+            style={{ background: "radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%)" }}
+          />
+          <div
+            className="absolute bottom-[-120px] right-[-80px] w-[360px] h-[360px] rounded-full blur-[100px]"
+            style={{ background: "radial-gradient(circle, rgba(255,200,50,0.12) 0%, transparent 70%)" }}
+          />
+          {/* Subtle center shimmer */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 80%)",
+            }}
+          />
+        </div>
 
-        <div className="relative grid gap-8 md:grid-cols-[minmax(0,2.2fr)_minmax(0,2.8fr)] items-center">
-          {/* TEXT */}
-          <motion.div style={{ y: textY }} className="space-y-6">
-            {/* Tag */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-yellow-300">
-              <span className="inline-block w-2 h-2 bg-yellow-400 rounded-full" />
-              Featured Project
-            </div>
+        {/* MAIN CONTAINER */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto h-full grid grid-cols-1 md:grid-cols-2">
 
-            <div className="flex items-center gap-3">
-              <project.icon className="text-yellow-400 w-9 h-9" />
-              <h3 className="text-3xl font-extrabold text-white sm:text-4xl">
-                {project.name}
-              </h3>
-            </div>
+          {/* TEXT SIDE */}
+          <div
+            className={`flex flex-col justify-center px-6 md:px-12 space-y-5
+            ${isReversed ? "md:order-2" : "md:order-1"}`}
+          >
+            {/* Decorative gold rule */}
+            <div
+              className="w-12 h-[2px]"
+              style={{ background: "linear-gradient(90deg, #c9a227, #f5d060)" }}
+            />
 
-            <p className="text-base leading-relaxed text-gray-300 sm:text-lg">
+            {/* TITLE */}
+            <h3
+              className="text-3xl md:text-5xl font-bold"
+              style={{
+                color: "#f5d060",
+                textShadow: "0 0 40px rgba(212,175,55,0.25)",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {project.name}
+            </h3>
+
+            {/* DESCRIPTION */}
+            <p style={{ color: "rgba(210,190,130,0.7)" }} className="text-base md:text-lg max-w-xl">
               {project.description}
             </p>
 
-            {/* Tech Stack */}
-            <div>
-              <h4 className="mb-3 text-sm font-semibold tracking-wider text-yellow-400 uppercase">
-                Tech Stack
-              </h4>
-              <div className="flex flex-wrap gap-3">
-                {project.techStack.map((tech: any, i: number) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-100 border border-yellow-500/20 rounded-2xl bg-white/5"
-                  >
-                    <img src={tech.icon} alt={tech.name} className="w-5 h-5" />
-                    {tech.name}
-                  </div>
-                ))}
-              </div>
+            {/* TECH STACK */}
+            <div className="flex gap-3 flex-wrap pt-2">
+              {project.techStack?.map((tech: any, i: number) => (
+                <img
+                  key={i}
+                  src={tech.icon}
+                  alt={tech.name}
+                  title={tech.name}
+                  className="w-6 h-6 md:w-8 md:h-8 transition"
+                  style={{ opacity: 0.75, filter: "sepia(0.4) saturate(1.2)" }}
+                  onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = "0.75")}
+                />
+              ))}
             </div>
 
-            {/* Features */}
-            <div>
-              <h4 className="mb-3 text-sm font-semibold tracking-wider text-yellow-400 uppercase">
-                Key Features
-              </h4>
-              <ul className="grid gap-2.5 text-sm sm:text-[0.95rem] text-gray-200 sm:grid-cols-2">
-                {project.features.map((feature: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="w-2 h-2 mt-2 bg-yellow-400 rounded-full shrink-0" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+            {/* FEATURES */}
+            <ul className="text-sm space-y-1 max-w-md" style={{ color: "rgba(200,175,110,0.65)" }}>
+              {project.features?.slice(0, 3).map((feature: string, i: number) => (
+                <li key={i} className="flex gap-2 items-start">
+                  <span style={{ color: "#c9a227" }}>◆</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            {/* MODULES */}
+            <div className="flex gap-2 flex-wrap pt-2">
+              {project.modules?.map((mod: any, i: number) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 text-xs font-semibold"
+                  style={{
+                    background: "linear-gradient(135deg, #c9a227, #f5d060)",
+                    color: "#0a0800",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {mod.name}
+                </span>
+              ))}
             </div>
 
-            {/* Buttons */}
-           {/* Buttons */}
-<div className="flex flex-wrap gap-4 pt-2">
-  {/* ✅ Live Demo only if available */}
-  {project.liveUrl && project.liveUrl !== "#" && (
-    <a
-      href={project.liveUrl}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold text-black rounded-2xl
-                 bg-gradient-to-r from-yellow-400 to-amber-500
-                 hover:from-yellow-500 hover:to-amber-600 transition"
-    >
-      <ExternalLink className="w-4 h-4" />
-      Live Demo
-    </a>
-  )}
+            {/* BUTTONS */}
+            <div className="flex gap-4 pt-4">
+              {project.liveUrl && project.liveUrl !== "#" && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  className="group px-6 py-3 flex items-center gap-2 font-semibold transition-all duration-300 ease-out hover:translate-x-2"
+                  style={{
+                    background: "linear-gradient(135deg, #c9a227 0%, #f5d060 50%, #b8891a 100%)",
+                    color: "#0a0800",
+                    boxShadow: "0 4px 24px rgba(201,162,39,0.3), inset 0 1px 0 rgba(255,255,255,0.15)",
+                  }}
+                >
+                  <ExternalLink
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                  Live
+                </a>
+              )}
 
-  {/* ✅ Github always */}
-  {project.githubUrl && project.githubUrl !== "#" && (
-    <a
-      href={project.githubUrl}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold text-yellow-300
-                 border border-yellow-500/40 rounded-2xl hover:bg-yellow-500/10 transition"
-    >
-      <Github className="w-4 h-4" />
-      View Code
-    </a>
-  )}
-</div>
-
-          </motion.div>
-
-          {/* IMAGE */}
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl bg-gray-950 border border-yellow-500/25">
-            <motion.img
-              src={project.image}
-              alt={project.name}
-              style={{ scale: imageScale }}
-              className="object-cover w-full h-full origin-center will-change-transform"
-            />
-
-            {/* bottom overlay */}
-            <div className="absolute inset-x-0 bottom-0 pointer-events-none h-2/3 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-
-            {/* Modules Count */}
-            <div className="absolute bottom-4 right-4 inline-flex items-center rounded-full border border-yellow-500/40 bg-black/70 px-4 py-2 text-[0.7rem] uppercase tracking-[0.18em] text-yellow-200 backdrop-blur">
-              {project.modules.length} Modules
+              {project.githubUrl && project.githubUrl !== "#" && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  className="group px-6 py-3 flex items-center gap-2 font-semibold transition-all duration-300 ease-out hover:translate-x-2"
+                  style={{
+                    background: "transparent",
+                    color: "#f5d060",
+                    border: "1px solid rgba(201,162,39,0.5)",
+                    boxShadow: "0 0 20px rgba(201,162,39,0.08)",
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.background = "rgba(201,162,39,0.1)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,162,39,0.9)";
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.background = "transparent";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(201,162,39,0.5)";
+                  }}
+                >
+                  <Github
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                  Code
+                </a>
+              )}
             </div>
           </div>
+
+          {/* IMAGE SIDE */}
+          <div
+            className={`relative h-full w-full ${isReversed ? "md:order-1" : "md:order-2"}`}
+          >
+            <img
+              src={project.image}
+              alt={project.name}
+              className="h-full w-full object-cover"
+              style={{ filter: "brightness(0.85) sepia(0.15) saturate(1.1)" }}
+            />
+
+            {/* Gold-tinted overlay */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(10,8,0,0.7) 0%, rgba(10,8,0,0.1) 40%, transparent 100%)",
+              }}
+            />
+
+            {/* Side fade toward text */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: isReversed
+                  ? "linear-gradient(to left, rgba(10,8,0,0) 60%, rgba(10,8,0,0.6) 100%)"
+                  : "linear-gradient(to right, rgba(10,8,0,0) 60%, rgba(10,8,0,0.6) 100%)",
+              }}
+            />
+
+            {/* Subtle gold shimmer on image edge */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                boxShadow: isReversed
+                  ? "inset -1px 0 60px rgba(201,162,39,0.08)"
+                  : "inset 1px 0 60px rgba(201,162,39,0.08)",
+              }}
+            />
+          </div>
+
         </div>
       </motion.article>
     </div>
